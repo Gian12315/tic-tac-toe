@@ -1,9 +1,11 @@
+import random
+
 board = [[" ", " ", " "],
         [" ", " ", " "],
         [" ", " ", " "]]
-possibleMoves = [["7", "8", "9"],
-                ["4", "5", "6"],
-                ["1", "2", "3"]]
+possibleMoves = [[7, 8, 9],
+                [4, 5, 6],
+                [1, 2, 3]]
 
 # This function prints the board... I'm unsure of how changing the width will break everything
 # I should rewrite it, or fix it.                
@@ -23,9 +25,31 @@ def makeMove(turn, position):
         if position in list:
             indexX = list.index(position)
             indexY = possibleMoves.index(list)
-            possibleMoves[indexY][indexX] = "0"
+            possibleMoves[indexY][indexX] = 0
+            board[indexY][indexX] = turn
     if indexX is None or indexY is None:
         print ("The place is taken, pick another one")
         return False
     return True
 
+def gameLoop():
+    print("Tic Tac Toe Game")
+    turn = random.choice(["X","O"])
+    hasWon = False
+    while hasWon is not True:
+        printBoard(board)    
+        print("\n\nIs {} turn.".format(turn))
+        position = int(input("Position: "))
+        if not (position >=1 or position <=9):
+            print("Invalid move, please insert one of these values")
+            printBoard(possibleMoves)
+
+        isValid = makeMove(turn, position)
+        if isValid is not True:
+            continue
+        if turn == "X":
+            turn = "O"
+        else:
+            turn = "X"
+
+gameLoop()
