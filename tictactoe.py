@@ -55,7 +55,7 @@ def gameLoop():
                 continue
             hasWon = checkIfWon(turn, board) 
             if hasWon is True:
-                printBoard(board)
+                return
             if turn == "X":
                 turn = "O"
             else:
@@ -77,6 +77,7 @@ def gameLoop():
             hasWon = checkIfWon(turn, board) 
             if hasWon is True:
                 printBoard(board)
+                return
             if turn == "X":
                 turn = "O"
             else:
@@ -115,7 +116,7 @@ def checkIfWon(turn, board):
             if board[y][x] == turn:
                 ocurrences = ocurrences + 1
         if ocurrences == 3:
-            print ("{} has won!".format(turn))
+            print ("\n\n\n{} has won!".format(turn))
             return True
     # This checks for diagonal
     if (board[0][0] == turn and board[1][1] == turn and board[2][2] == turn) or \
