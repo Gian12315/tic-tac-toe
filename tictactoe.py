@@ -152,7 +152,6 @@ def iaTurn():
                     indexY = pM.index(list)
                     pM[indexY][indexX] = 0
                     board[indexY][indexX] = "O"
-                    position = randomCorner
     else:
         for i in range(0, fullSides):
             sides.remove(0)
@@ -164,6 +163,5 @@ def iaTurn():
                     indexY = pM.index(list)
                     pM[indexY][indexX] = 0
                     board[indexY][indexX] = "O"
-                    position = randomSide
 
 gameLoop()
