@@ -1,4 +1,4 @@
-import random
+import random, copy
 
 board = [[" ", " ", " "],
         [" ", " ", " "],
@@ -7,6 +7,11 @@ pM = [[7, 8, 9],
                 [4, 5, 6],
                 [1, 2, 3]]
 
+def getBoard():
+    return board
+def setBoard(newBoard):
+    board = copy.deepcopy(newBoard)
+    return board
 # This function prints the board... I'm unsure of how changing the width will break everything
 # I should rewrite it, or fix it.                
 def printBoard(board, width=10):
@@ -53,8 +58,10 @@ def gameLoop():
             isValid = makeMove(turn, position)
             if isValid is not True:
                 continue
-            hasWon = checkIfWon(turn, board) 
+            hasWon = bool(checkIfWon(turn, board))
             if hasWon is True:
+                print ("{} has won!".format(turn))
+                printBoard(board)
                 return
             if turn == "X":
                 turn = "O"
@@ -74,8 +81,9 @@ def gameLoop():
                     continue
             elif turn == "O":
                 iaTurn()
-            hasWon = checkIfWon(turn, board) 
+            hasWon = bool(checkIfWon(turn, board) )
             if hasWon is True:
+                print ("{} has won!".format(turn))
                 printBoard(board)
                 return
             if turn == "X":
@@ -107,8 +115,7 @@ def checkIfWon(turn, board):
     # This checks horizontal
     for lists in board:
         if lists.count(turn) == 3:
-            print ("{} has won!".format(turn))
-            return True
+            return 1
     # This checks for vertical
     for x in range(3):
         ocurrences = 0
@@ -116,29 +123,26 @@ def checkIfWon(turn, board):
             if board[y][x] == turn:
                 ocurrences = ocurrences + 1
         if ocurrences == 3:
-            print ("\n\n\n{} has won!".format(turn))
-            return True
+            return 1
     # This checks for diagonal
     if (board[0][0] == turn and board[1][1] == turn and board[2][2] == turn) or \
     (board[0][2] == turn and board[1][1] == turn and board[2][0] == turn):
-        print ("{} has won!".format(turn))
-        return True
-    return False
+        return 1
+    return 0
 
 def iaTurn():
     center = pM[1][1]
     corners = [pM[0][0], pM[0][2], pM[2][0], pM[2][2]]
     corners.sort()
-    fullCorners = corners.count(0)
     sides = [pM[0][1], pM[1][0], pM[1][2], pM[2][1]]
     sides.sort()
+    fullCorners = corners.count(0)
     fullSides = sides.count(0)
     if center != 0:
         pM[1][1] = 0
         board[1][1] = "O"
-        return True
     elif fullCorners != 4:
-        for i in range(fullCorners):
+        for i in range(0, fullCorners):
             corners.remove(0)
         randomCorner = random.choice(corners)
         if isinstance(randomCorner, int):
@@ -148,9 +152,9 @@ def iaTurn():
                     indexY = pM.index(list)
                     pM[indexY][indexX] = 0
                     board[indexY][indexX] = "O"
-        return True
+                    position = randomCorner
     else:
-        for i in range(fullSides):
+        for i in range(0, fullSides):
             sides.remove(0)
         randomSide = random.choice(sides)
         if isinstance(randomSide, int):
@@ -160,8 +164,6 @@ def iaTurn():
                     indexY = pM.index(list)
                     pM[indexY][indexX] = 0
                     board[indexY][indexX] = "O"
-        return True
-    return False
-        
+                    position = randomSide
 
 gameLoop()
